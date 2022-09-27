@@ -2,7 +2,7 @@ import { Transform } from 'class-transformer';
 import { BadRequestException } from '@nestjs/common';
 import { FieldQueryValidation } from '../interfaces/field-validation.interface';
 
-const ValidateObjectProperties = ( props: FieldQueryValidation[] ) => {
+const ValidateObjectProps = ( props: FieldQueryValidation[] ) => {
   const toPlain = Transform(
     ({ value }) => {
       return value;
@@ -78,4 +78,4 @@ const validateProperties = ( obj: any, props: FieldQueryValidation[], key: strin
   return objFormatted;
 };
 
-export { ValidateObjectProperties };
+export { ValidateObjectProps };

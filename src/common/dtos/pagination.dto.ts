@@ -1,7 +1,7 @@
 import { Transform, Type } from "class-transformer";
 import { IsBoolean, IsNumber, IsObject, IsOptional, IsPositive, Min } from "class-validator";
 import { TransformToBoolean } from "../decorators/transform-to-boolean.decorator";
-import { ValidateObjectProperties } from "../decorators/validate-object-properties.decorator";
+import { ValidateObjectProps } from "../decorators/validate-object-properties.decorator";
 import { FieldQueryValidation } from "../interfaces/field-validation.interface";
 
 const USER_FIELDS: FieldQueryValidation[] = [
@@ -39,7 +39,7 @@ export class PaginationDto {
     active?: boolean;
 
     @IsOptional()
-    @ValidateObjectProperties(USER_FIELDS)
+    @ValidateObjectProps(USER_FIELDS)
     @IsObject()
     user?: IUser;
 
