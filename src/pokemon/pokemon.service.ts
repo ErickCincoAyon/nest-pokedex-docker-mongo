@@ -1,13 +1,14 @@
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
 
 @Injectable()
 export class PokemonService {
-  
+    
   constructor(
     @InjectModel( Pokemon.name )
     private readonly pokemonModel: Model<Pokemon>
@@ -20,14 +21,19 @@ export class PokemonService {
       return pokemon;
 
     } catch (error) { 
-      console.log( error );
-      await this.handleExceptions( error ) 
+      await this.handleExceptions( error );
     };
     
   }
 
-  async findAll() {
-    return `This action returns all pokemon`;
+  async findAll( paginationDto: PaginationDto ) {
+    const { limit = 10, offset = 0 } = paginationDto;
+    
+    return this.pokemonModel.find()
+      .limit( limit )
+      .skip( offset )
+      .sort({ no: 1 })
+      .select('-__v');
   }
 
   async findOne( term: string ) {
@@ -74,5 +80,19 @@ export class PokemonService {
       throw new ConflictException(`Pokemon exists in db: ${ JSON.stringify( error.keyValue )}`);
     
     throw new InternalServerErrorException(`Can't update Pokemon - Check server logs`);
+  }
+
+  async fillPokemonWithSeedData( createPokemonDto: CreatePokemonDto ) {
+    try {
+      const pokemon: Pokemon = await this.pokemonModel.create( createPokemonDto );
+      return pokemon;
+
+    } catch (error) { 
+      await this.handleExceptions( error );
+    };
+  }
+
+  async removePokemonsToSeedData() {
+    await this.pokemonModel.deleteMany({});
   }
 }
