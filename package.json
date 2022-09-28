@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "_comment": "the scripts start and start:prod change the values",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
