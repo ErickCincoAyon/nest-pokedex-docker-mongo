@@ -18,8 +18,8 @@ services:
       PORT: ${PORT}
       PAGINATION_LIMIT: ${PAGINATION_LIMIT}
       PAGINATION_OFFSET: ${PAGINATION_OFFSET}
-    # volumes:
-    #   - ./:/var/www/pokedex
+    volumes:
+      - ./public:/usr/src/app/public
 
   db:
     image: mongo:5
